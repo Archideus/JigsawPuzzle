@@ -18,16 +18,16 @@ class JigsawPuzzle: SKScene {
     var guidePhoto : SKSpriteNode?
     var movingPiece : Piece?
     var maxZPosition : CGFloat = Layer.Tiles
-    override func didMoveToView(view: SKView) {
-        super.didMoveToView(view)
-        backgroundColor = UIColor.lightGrayColor()
+    override func didMove(to view: SKView) {
+        super.didMove(to: view)
+        backgroundColor = UIColor.lightGray
         setBorder()
         startNewPuzzleGameLevel()
         restartButton()
     }
     func restartButton(){
         
-        let button = SKButton(color: .redColor(), size: .zero)
+        let button = SKButton(color: .red, size: .zero)
         button.animatable = true
         button.size = CGSize(width: 100, height: 50)
         button.anchorPoint = CGPoint(x: 0, y: 0)
@@ -36,7 +36,7 @@ class JigsawPuzzle: SKScene {
         button.setTitle("Restart")
         //button.setImageForState(UIImage(named: "menu")!, state: SKButtonState.Normal)
         //button.setImageForState(UIImage(named: "menu_clicked")!, state: SKButtonState.Highlighted)
-        button.addTarget(self, selector: "tapped", event: SKButtonEvent.TouchUpInside)
+        button.addTarget(self, selector: #selector(JigsawPuzzle.tapped), event: SKButtonEvent.touchUpInside)
         addChild(button)
     }
     func tapped(){
@@ -86,25 +86,25 @@ class JigsawPuzzle: SKScene {
         
 //        let fallRect1 = CGRectMake(50, 50, frame.width - 100, 5)                   //down rect (unused)
 //        let fallRect2 = CGRectMake(50, frame.height - 130, frame.width - 100, 5)   //up rect (unused)
-        let fallRect3 = CGRectMake(55, 50, 5, frame.height - 110)                  //left rect
-        let fallRect4 = CGRectMake(frame.width - 65, 50, 5, frame.height - 110)   //right rect
+        let fallRect3 = CGRect(x: 55, y: 50, width: 5, height: frame.height - 110)                  //left rect
+        let fallRect4 = CGRect(x: frame.width - 65, y: 50, width: 5, height: frame.height - 110)   //right rect
         let rects = [fallRect3, fallRect4]
         for piece in pieces{
             let rect = rects[randomInRange(0, upper: rects.count - 1)]
             let point = CGPoint.randomPointInRect(rect)
-            let position = convertPoint(point, toNode: border!)
-            let action = SKAction.moveTo(position, duration: 1.5)
-            piece.runAction(action)
+            let position = convert(point, to: border!)
+            let action = SKAction.move(to: position, duration: 1.5)
+            piece.run(action)
             piece.rotateRandomly()
         }
-        let fadein = SKAction.fadeAlphaTo(0.3, duration: 1.5)
-        guidePhoto?.runAction(fadein)
+        let fadein = SKAction.fadeAlpha(to: 0.3, duration: 1.5)
+        guidePhoto?.run(fadein)
     }
-    func setPiece(size : CGSize, index : Int){
+    func setPiece(_ size : CGSize, index : Int){
         let piece = Piece()
         piece.anchorPoint  = CGPoint(x: 0.5, y: 0.5)
         piece.size = size
-        piece.color = UIColor.blueColor()
+        piece.color = UIColor.blue
         piece.name = pieceName
         pieces.append(piece)
         piece.tag = index
@@ -124,7 +124,7 @@ class JigsawPuzzle: SKScene {
     func setBorder(){
         let sprite = SKSpriteNode()
         
-        sprite.color = .clearColor()
+        sprite.color = .clear
         sprite.size = CGSize(width: 760, height: 698)
         sprite.position = CGPoint(x: (frame.width - 760) * 0.5, y: 30)
         sprite.anchorPoint = CGPoint(x: 0, y: 0)
@@ -133,24 +133,24 @@ class JigsawPuzzle: SKScene {
         addChild(sprite)
         border = sprite
     }
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         for touch in touches{
-            let loc = touch.locationInNode(border!)
-            let nodes = border!.nodesAtPoint(loc)
+            let loc = touch.location(in: border!)
+            let nodes = border!.nodes(at: loc)
             var piecess = [Piece]()
             for node in nodes where node.name == pieceName{
-                if node.isKindOfClass(Piece) {
+                if node.isKind(of: Piece.self) {
                     piecess.append((node as? Piece)!)
                 }
                 
             }
-            var minElem = CGFloat.min
+            var minElem = CGFloat.leastNormalMagnitude
             var index : Int = 0
             for piece in piecess{
                 if piece.zPosition > minElem{
                     minElem += piece.zPosition
-                    index = piecess.indexOf(piece)!
+                    index = piecess.index(of: piece)!
                 }
             }
             if piecess.count > 0{
@@ -162,41 +162,41 @@ class JigsawPuzzle: SKScene {
             
         }
     }
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         for touch in touches{
-            let loc = touch.locationInNode(border!)
+            let loc = touch.location(in: border!)
             movingPiece?.touchMoves(loc)
         }
 
     }
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
             movingPiece?.touchEnd()
         if let node = movingPiece{
             radar(node)}
     }
-    func radar(piece : Piece){
+    func radar(_ piece : Piece){
         let position = piece.position
         var distances = [CGFloat]()
         for point in points{
             let distance = distanceBetweenPoints(point, point2: position)
             distances.append(distance)
         }
-        var min = CGFloat.max
+        var min = CGFloat.greatestFiniteMagnitude
         var index = 0
         for distance in distances{
             if distance < min{
                 min = distance
-                index = distances.indexOf(distance)!
+                index = distances.index(of: distance)!
             }
         }
         let point = points[index]
         if piece.correctPosition == point{
-        let action = SKAction.moveTo(point, duration: 0.2)
-            piece.runAction(action)
+        let action = SKAction.move(to: point, duration: 0.2)
+            piece.run(action)
         }
     }
-    func setNeighboursInSafeDistance(piece : Piece){
+    func setNeighboursInSafeDistance(_ piece : Piece){
         ///This method has no impact to anything, its there bcs I can!
         let widthe = piece.size.width * 0.9
         let centerNodePosition = piece.position
@@ -204,10 +204,10 @@ class JigsawPuzzle: SKScene {
         let rightPoint = CGPoint(x: centerNodePosition.x + widthe, y: centerNodePosition.y)
         let leftPoint = CGPoint(x: centerNodePosition.x - widthe, y: centerNodePosition.y)
         let downPoint = CGPoint(x: centerNodePosition.x, y: centerNodePosition.y - widthe)
-        let upNodes = border?.nodesAtPoint(upPoint)
-        let rightNodes = border?.nodesAtPoint(rightPoint)
-        let leftNodes  = border?.nodesAtPoint(leftPoint)
-        let downNodes = border?.nodesAtPoint(downPoint)
+        let upNodes = border?.nodes(at: upPoint)
+        let rightNodes = border?.nodes(at: rightPoint)
+        let leftNodes  = border?.nodes(at: leftPoint)
+        let downNodes = border?.nodes(at: downPoint)
         if let up = upNodes{
         for pie in up where pie.name == pieceName{
             piece.con!.top = (pie as! Piece).tag!
@@ -239,13 +239,13 @@ class Piece: SKSpriteNode {
     var tapTimeInterval : Int = 0
     var taps = 0
     let rotationTimeLimit = 3
-    var counterTimer : NSTimer?
+    var counterTimer : Timer?
     var rotation = PieceRotation.zero
     var tag : Int?
     var hasMoved = false
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
         super.init(texture: texture, color: color, size: size)
-        userInteractionEnabled = false
+        isUserInteractionEnabled = false
         con = ConectionTags()
     }
     func rotateRandomly(){
@@ -253,32 +253,32 @@ class Piece: SKSpriteNode {
         let index = randomInRange(0, upper: array.count - 1)
         rotation = PieceRotation(rawValue: index)!
         let randomRot = array[index].degreesToRadians
-        let action = SKAction.rotateByAngle(randomRot, duration: 1.5)
-        runAction(action)
+        let action = SKAction.rotate(byAngle: randomRot, duration: 1.5)
+        run(action)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         
         
     }
     func touchStart(){
-        counterTimer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: "addMiliSec", userInfo: nil, repeats: true)
+        counterTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(Piece.addMiliSec), userInfo: nil, repeats: true)
     }
-    func touchMoves(point : CGPoint){
+    func touchMoves(_ point : CGPoint){
        hasMoved = true
-        let action = SKAction.moveTo(point, duration: 0.001)
-        runAction(action)
+        let action = SKAction.move(to: point, duration: 0.001)
+        run(action)
     }
     func touchEnd(){
         counterTimer?.invalidate()
         counterTimer = nil
         if hasMoved == false{
         if tapTimeInterval <= 3{
-            let action = SKAction.rotateByAngle(90.degreesToRadians, duration: 0.2)
-            runAction(action)
+            let action = SKAction.rotate(byAngle: 90.degreesToRadians, duration: 0.2)
+            run(action)
             tapTimeInterval = 0
             if taps < 3{
                 taps += 1

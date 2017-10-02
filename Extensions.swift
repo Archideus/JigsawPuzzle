@@ -17,11 +17,11 @@ extension UIColor{
         var alpha: CGFloat = 1.0
         
         if rgba.hasPrefix("#") {
-            let index   = rgba.startIndex.advancedBy(1)
-            let hex : NSString    = rgba.substringFromIndex(index)
-            let scanner = NSScanner(string: hex as String)
+            let index   = rgba.characters.index(rgba.startIndex, offsetBy: 1)
+            let hex : NSString    = rgba.substring(from: index) as NSString
+            let scanner = Scanner(string: hex as String)
             var hexValue: CUnsignedLongLong = 0
-            if scanner.scanHexLongLong(&hexValue) {
+            if scanner.scanHexInt64(&hexValue) {
                 if (hex.length == 6) {
                     red   = CGFloat((hexValue & 0xFF0000) >> 16) / 255.0
                     green = CGFloat((hexValue & 0x00FF00) >> 8)  / 255.0
@@ -45,7 +45,7 @@ extension UIColor{
     
 }
 
-public func convertUIPointToSprite(point: CGPoint, node : SKSpriteNode) -> CGPoint{
+public func convertUIPointToSprite(_ point: CGPoint, node : SKSpriteNode) -> CGPoint{
     
     let height = node.size.height
     let y = height - point.y
@@ -55,12 +55,12 @@ public func convertUIPointToSprite(point: CGPoint, node : SKSpriteNode) -> CGPoi
 }
 extension Int {
     var degreesToRadians : CGFloat {
-        return CGFloat(self) * CGFloat(M_PI) / 180.0
+        return CGFloat(self) * .pi / 180.0
     }
 }
 
 extension UIImage{
-    func sliceImageToPieces(imageSize : CGSize, pieceSize : CGSize) -> [UIImage]{
+    func sliceImageToPieces(_ imageSize : CGSize, pieceSize : CGSize) -> [UIImage]{
         let whole = resizeImage(imageSize, image: self)
         var imagesArray = [UIImage]()
        
@@ -68,9 +68,9 @@ extension UIImage{
         let tilesCount = Int(imagesCountInLine * imagesCountInLine)
         var line = 0
         var row = 0
-        for var i = 0; i < tilesCount; ++i {
-            let cgImg = CGImageCreateWithImageInRect(whole.CGImage, CGRectMake(CGFloat(row) * pieceSize.width, CGFloat(line) * pieceSize.width, pieceSize.width, pieceSize.height));
-            let img = UIImage(CGImage: cgImg!)
+        for _ in 0 ..< tilesCount {
+            let cgImg = (whole.cgImage)?.cropping(to: CGRect(x: CGFloat(row) * pieceSize.width, y: CGFloat(line) * pieceSize.width, width: pieceSize.width, height: pieceSize.height));
+            let img = UIImage(cgImage: cgImg!)
             imagesArray.append(img)
 
             if row == imagesCountInLine - 1{
@@ -83,30 +83,31 @@ extension UIImage{
 
         return imagesArray
     }
-    func resizeImage(size: CGSize, image : UIImage) -> UIImage {
+    func resizeImage(_ size: CGSize, image : UIImage) -> UIImage {
       
         UIGraphicsBeginImageContext(size);
         
-        let context = UIGraphicsGetCurrentContext();
-        CGContextTranslateCTM(context, 0.0, size.height);
-        CGContextScaleCTM(context, 1.0, -1.0);
+        guard let context = UIGraphicsGetCurrentContext() else { return image }
+        context.translateBy(x: 0.0, y: size.height)
+        context.scaleBy(x: 1.0, y: -1.0);
         
-        CGContextDrawImage(context, CGRectMake(0.0, 0.0, size.width, size.height), image.CGImage);
+        let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        context.draw(image.cgImage!, in: rect)
         
-        let scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         
-        UIGraphicsEndImageContext();
+        UIGraphicsEndImageContext()
 
-        return scaledImage
+        return scaledImage!
     }
 
-    func jigSawCuter(imageSize : CGSize, piecesCount : Int) -> ([UIImage], [CGPoint]){
+    func jigSawCuter(_ imageSize : CGSize, piecesCount : Int) -> ([UIImage], [CGPoint]){
         let imageOrg = resizeImage(imageSize, image: self)
         var im = [UIImage]()
         let paths = (nineXnine() as NSArray).reversedArray() as! [UIBezierPath]
         var centers = [CGPoint]()
         ////Next lines generates huge memory peak when image is cutted, but it releases afterwards
-        for var i = 0; i < piecesCount; ++i{
+        for i in 0 ..< piecesCount{
             let path = paths[i]
             path.usesEvenOddFillRule = true
             centers.append(path.center())
@@ -117,82 +118,101 @@ extension UIImage{
         }
         return (im, centers)
     }
-    func clipImage(path : UIBezierPath, image : UIImage) -> UIImage{
+    func clipImage(_ path : UIBezierPath, image : UIImage) -> UIImage{
         UIGraphicsBeginImageContextWithOptions(image.size, false, 0)
         path.addClip()
-        image.drawAtPoint(CGPointZero)
+        image.draw(at: CGPoint.zero)
         let newIma = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return trimmed(newIma)
+        return trimmed(newIma!)
     }
-    func trimmed(image : UIImage) -> UIImage{
-        let inImage = image.CGImage
-        let m_dataRef : CFDataRef = CGDataProviderCopyData(CGImageGetDataProvider(inImage))!
+    func trimmed(_ image : UIImage) -> UIImage{
+        guard let inImage = image.cgImage else { return image }
+        let m_dataRef : CFData = inImage.dataProvider!.data!
         let m_PixelBuf : UnsafePointer<UInt8> = CFDataGetBytePtr(m_dataRef)
-        let width : size_t = CGImageGetWidth(inImage)
-        let height : size_t = CGImageGetHeight(inImage)
+        let width : size_t = inImage.width
+        let height : size_t = inImage.height
         var top : CGPoint?
         var left : CGPoint?
         var right : CGPoint?
         var bottom : CGPoint?
         var breakOut = false
-        for var x = 0; breakOut == false && x < width; ++x{
-            for var y = 0; y < height; ++y{
-                var loc = x + (y * width)
-                loc *= 4
-                if m_PixelBuf[loc + 3] != 0{
-                    left = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                    breakOut = true
-                    break
-                }
-                
-               
-            }
-            
-        }
-        breakOut = false
-        for var y = 0; breakOut == false && y < height; ++y{
-            for var x = 0; x < width; ++x{
-                var loc = x + (y * width)
-                loc *= 4
-                if m_PixelBuf[loc + 3] != 0{
-                    top = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                    breakOut = true
-                    break
+        for x in 0..<width {
+            if !breakOut {
+                for y in 0 ..< height{
+                    var loc = x + (y * width)
+                    loc *= 4
+                    if m_PixelBuf[loc + 3] != 0{
+                        left = CGPoint(x: CGFloat(x), y: CGFloat(y))
+                        breakOut = true
+                        break
+                    }
                 }
             }
         }
         breakOut = false
-        for var y = height - 1; breakOut == false && y >= 0; --y{
-            for var x = width - 1; x >= 0; --x{
-                var loc = x + (y * width)
-                loc *= 4
-                if m_PixelBuf[loc + 3] != 0{
-                    bottom = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                    breakOut = true
-                    break
+        for y in 0..<height {
+            if !breakOut {
+                for x in 0 ..< width{
+                    var loc = x + (y * width)
+                    loc *= 4
+                    if m_PixelBuf[loc + 3] != 0{
+                        top = CGPoint(x: CGFloat(x), y: CGFloat(y))
+                        breakOut = true
+                        break
+                    }
                 }
             }
         }
         breakOut = false
-        for var x = width - 1; breakOut == false && x >= 0; --x{
-            for var y = height - 1; y >= 0; --y{
-                var loc = x + (y * width)
-                loc *= 4
-                if m_PixelBuf[loc + 3] != 0{
-                    right = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                    breakOut = true
-                    break
+        for y in (0...height-1).reversed() {
+            if !breakOut {
+                for x in (0...width - 1).reversed() {
+                    var loc = x + (y * width)
+                    loc *= 4
+                    if m_PixelBuf[loc + 3] != 0{
+                        bottom = CGPoint(x: CGFloat(x), y: CGFloat(y))
+                        breakOut = true
+                        break
+                    }
+                }
+            }
+        }
+        
+        for y in (0...height - 1).reversed() {
+            if !breakOut {
+                for x in (0...width - 1).reversed() {
+                    var loc = x + (y * width)
+                    loc *= 4
+                    if m_PixelBuf[loc + 3] != 0{
+                        bottom = CGPoint(x: CGFloat(x), y: CGFloat(y))
+                        breakOut = true
+                        break
+                    }
+                }
+            }
+        }
+        breakOut = false
+        for x in (0...width - 1).reversed() {
+            if !breakOut {
+                for y in (0...height - 1).reversed(){
+                    var loc = x + (y * width)
+                    loc *= 4
+                    if m_PixelBuf[loc + 3] != 0{
+                        right = CGPoint(x: CGFloat(x), y: CGFloat(y))
+                        breakOut = true
+                        break
+                    }
                 }
             }
         }
         let scale = image.scale
         let cropRect = CGRect(x: left!.x / scale, y: top!.y / scale, width: (right!.x - left!.x) / scale, height: (bottom!.y - top!.y) / scale)
         UIGraphicsBeginImageContextWithOptions(cropRect.size, false, scale)
-        image.drawAtPoint(CGPoint(x: -cropRect.origin.x, y: -cropRect.origin.y), blendMode: CGBlendMode.Copy, alpha: 1.0)
+        image.draw(at: CGPoint(x: -cropRect.origin.x, y: -cropRect.origin.y), blendMode: CGBlendMode.copy, alpha: 1.0)
         let croppedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return croppedImage
+        return croppedImage!
         
        
     }
@@ -204,7 +224,7 @@ extension NSArray{
         let array = NSMutableArray(capacity: self.count)
         let enumeratore = self.reverseObjectEnumerator()
         for element in enumeratore {
-            array.addObject(element)
+            array.add(element)
             
         }
         return array
@@ -213,10 +233,10 @@ extension NSArray{
 }
 extension UIBezierPath{
     func center() -> CGPoint{
-        return CGPoint(x: CGRectGetMidX(self.bounds), y: CGRectGetMidY(self.bounds))
+        return CGPoint(x: self.bounds.midX, y: self.bounds.midY)
     }
 }
-public func abbreviateNumber(num: NSNumber) -> NSString {
+public func abbreviateNumber(_ num: NSNumber) -> NSString {
     var ret: NSString = ""
     let abbrve: [String] = ["K", "M", "B"]
     
@@ -239,27 +259,27 @@ public func abbreviateNumber(num: NSNumber) -> NSString {
     
     return ret
 }
-public func floatToString(val: Float) -> NSString {
+public func floatToString(_ val: Float) -> NSString {
     var ret = NSString(format: "%.1f", val)
-    var c = ret.characterAtIndex(ret.length - 1)
+    var c = ret.character(at: ret.length - 1)
     
     while c == 48 {
-        ret = ret.substringToIndex(ret.length - 1)
-        c = ret.characterAtIndex(ret.length - 1)
+        ret = ret.substring(to: ret.length - 1) as NSString
+        c = ret.character(at: ret.length - 1)
         
         
         if (c == 46) {
-            ret = ret.substringToIndex(ret.length - 1)
+            ret = ret.substring(to: ret.length - 1) as NSString
         }
     }
     return ret
 }
-public func distanceBetweenPoints(point1:CGPoint,point2:CGPoint)->CGFloat{
+public func distanceBetweenPoints(_ point1:CGPoint,point2:CGPoint)->CGFloat{
     return sqrt(pow(point1.x-point2.x,2) + pow(point1.y-point2.y,2));
 }
 extension CGSize{
     
-    func containsPoint(point : CGPoint) -> Bool{
+    func containsPoint(_ point : CGPoint) -> Bool{
         if point.x >= 0 && point.x <= width && point.y >= 0 && point.y <= height{
             return true
         }
@@ -268,17 +288,17 @@ extension CGSize{
     
 }
 extension CGPoint{
-    static func randomPointInRect(rect : CGRect) -> CGPoint{
+    static func randomPointInRect(_ rect : CGRect) -> CGPoint{
             var point = rect.origin
-            point.x += CGFloat(arc4random_uniform(UInt32(CGRectGetWidth(rect))))
-            point.y += CGFloat(arc4random_uniform(UInt32(CGRectGetHeight(rect))))
+            point.x += CGFloat(arc4random_uniform(UInt32(rect.width)))
+            point.y += CGFloat(arc4random_uniform(UInt32(rect.height)))
     
             return point
         
      
     }
 }
-extension CollectionType where Index == Int {
+extension Collection where Index == Int {
     /// Return a copy of `self` with its elements shuffled
     func shuffle() -> [Generator.Element] {
         var list = Array(self)
@@ -287,27 +307,25 @@ extension CollectionType where Index == Int {
     }
 }
 
-extension MutableCollectionType where Index == Int {
+extension MutableCollection where Indices.Iterator.Element == Index {
     /// Shuffle the elements of `self` in-place.
     mutating func shuffleInPlace() {
-        // empty and single-element collections don't shuffle
-        if count < 2 { return }
+        let c = count
+        guard c > 1 else { return }
         
-        for i in 0..<count - 1 {
-            let j = Int(arc4random_uniform(UInt32(count - i))) + i
-            swap(&self[i], &self[j])
+        for (firstUnshuffled , unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
+            let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            guard d != 0 else { continue }
+            let i = index(firstUnshuffled, offsetBy: d)
+            swap(&self[firstUnshuffled], &self[i])
         }
     }
 }
-public func randomInRange (lower: Int , upper: Int) -> Int {
+public func randomInRange (_ lower: Int , upper: Int) -> Int {
     return lower + Int(arc4random_uniform(UInt32(upper - lower + 1)))
 }
-public func delay(delay:Double, closure:()->()) {
-    dispatch_after(
-        dispatch_time(
-            DISPATCH_TIME_NOW,
-            Int64(delay * Double(NSEC_PER_SEC))
-        ),
-        dispatch_get_main_queue(), closure)
+public func delay(_ delay:Double, closure:@escaping ()->()) {
+    DispatchQueue.main.asyncAfter(
+        deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
 }
 

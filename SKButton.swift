@@ -9,12 +9,12 @@
 import SpriteKit
 
 enum SKButtonState {
-    case Normal
-    case Highlighted
+    case normal
+    case highlighted
 }
 enum SKButtonEvent{
-    case TouchDown
-    case TouchUpInside
+    case touchDown
+    case touchUpInside
 }
 class SKButton: SKSpriteNode {
     var targetUp : AnyObject?
@@ -27,58 +27,58 @@ class SKButton: SKSpriteNode {
     var textLabel : SKLabelNode?
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
         super.init(texture: texture, color: color, size: size)
-        self.userInteractionEnabled = true
+        self.isUserInteractionEnabled = true
         textLabel = SKLabelNode()
         textLabel?.position = CGPoint(x: 50, y: 15)
         textLabel?.fontSize = 30
         addChild(textLabel!)
     }
-    func setTitle(string : String){
+    func setTitle(_ string : String){
         textLabel?.text = string
     }
-    func addTarget(target : AnyObject?, selector: Selector, event : SKButtonEvent){
+    func addTarget(_ target : AnyObject?, selector: Selector, event : SKButtonEvent){
         eventUp = event
         targetUp = target
         selectorUp = selector
     }
-    func setImageForState(image : UIImage, state : SKButtonState){
-        if state == .Normal{
+    func setImageForState(_ image : UIImage, state : SKButtonState){
+        if state == .normal{
             normalStateTexture = SKTexture(image: image)
             texture = normalStateTexture
-        }else if state == .Highlighted{
+        }else if state == .highlighted{
             hLightStateTexture = SKTexture(image: image)
         }
         
     }
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         texture = hLightStateTexture
         if animatable{
-        let action = SKAction.scaleTo(0.95, duration: 0.1)
-        runAction(action)
+        let action = SKAction.scale(to: 0.95, duration: 0.1)
+        run(action)
         }
         if let sound = soundFile{
             let soundAction = SKAction.playSoundFileNamed(sound, waitForCompletion: false)
-            runAction(soundAction)
+            run(soundAction)
         }
-        if eventUp == .TouchDown{
-            NSTimer.scheduledTimerWithTimeInterval(0.01, target: targetUp!, selector: selectorUp!, userInfo: nil, repeats: false)
+        if eventUp == .touchDown{
+            Timer.scheduledTimer(timeInterval: 0.01, target: targetUp!, selector: selectorUp!, userInfo: nil, repeats: false)
             print("TAPPED")
         }
        
     }
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         texture = normalStateTexture
         if animatable{
-            let action = SKAction.scaleTo(1.0, duration: 0.1)
-            runAction(action)
+            let action = SKAction.scale(to: 1.0, duration: 0.1)
+            run(action)
         }
         for touch in touches{
-            let loc = touch.locationInNode(self)
+            let loc = touch.location(in: self)
             if frame.size.containsPoint(loc){
                
                
-                if eventUp == .TouchUpInside{
-                    NSTimer.scheduledTimerWithTimeInterval(0.01, target: targetUp!, selector: selectorUp!, userInfo: nil, repeats: false)
+                if eventUp == .touchUpInside{
+                    Timer.scheduledTimer(timeInterval: 0.01, target: targetUp!, selector: selectorUp!, userInfo: nil, repeats: false)
                     print("TAPPED IN UP")
                 }
             }
