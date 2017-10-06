@@ -21,8 +21,8 @@ class SliddingPuzzle: SKScene {
     var movableTiles = [Tile]()
     var width : CGFloat = 0
     var correctCount : Int = 0
-    override func didMoveToView(view: SKView) {
-        backgroundColor = UIColor.lightGrayColor()
+    override func didMove(to view: SKView) {
+        backgroundColor = UIColor.lightGray
     
         
         setBorder()
@@ -33,14 +33,14 @@ class SliddingPuzzle: SKScene {
     }
     func restartButton(){
         
-        let button = SKButton(color: .redColor(), size: .zero)
+        let button = SKButton(color: .red, size: .zero)
         button.animatable = true
         button.size = CGSize(width: 100, height: 50)
         button.anchorPoint = CGPoint(x: 0, y: 0)
         button.position = CGPoint(x: 5, y: frame.height - 55)
         button.zPosition = 101
         button.setTitle("Restart")
-        button.addTarget(self, selector: "tapped", event: SKButtonEvent.TouchUpInside)
+        button.addTarget(self, selector: #selector(SliddingPuzzle.tapped), event: SKButtonEvent.touchUpInside)
         addChild(button)
     }
     
@@ -48,7 +48,7 @@ class SliddingPuzzle: SKScene {
         border?.removeAllChildren()
         startNewImageGameLevel(.easy, image: UIImage(named: "car.jpg")!)
     }
-    func startNewNumberGameLevel(level : NumberLevels){
+    func startNewNumberGameLevel(_ level : NumberLevels){
         border?.removeAllChildren()
         tiles.removeAll()
         points.removeAll()
@@ -58,7 +58,7 @@ class SliddingPuzzle: SKScene {
         width = CGFloat(min(Int(frame.height - 50), Int(frame.width - 50)) / tilesInLine)
         var line = tilesInLine - 1
         var row = 0
-        for var i = 0; i < tilesCount; ++i {
+        for _ in 0 ..< tilesCount {
             points.append(CGPoint(x: (CGFloat(row) * width), y: (CGFloat(line) * width)))
             if row == tilesInLine - 1{
                 line -= 1
@@ -69,14 +69,14 @@ class SliddingPuzzle: SKScene {
         }
         for point in points{
             setTile(point, size: CGSize(width: width - 1, height: width - 1))
-            tiles[points.indexOf(point)!].textLabel?.text = String(points.indexOf(point)! + 1)
+            tiles[points.index(of: point)!].textLabel?.text = String(points.index(of: point)! + 1)
         }
         
         putTilesInRandomPoints(false)
         hideOneRandomTile(false)
         
     }
-    func startNewImageGameLevel(level : ImageLevels, image : UIImage){
+    func startNewImageGameLevel(_ level : ImageLevels, image : UIImage){
         border?.removeAllChildren()
         tiles.removeAll()
         points.removeAll()
@@ -86,7 +86,7 @@ class SliddingPuzzle: SKScene {
         width = CGFloat(min(Int(frame.height - 50), Int(frame.width - 50)) / tilesInLine)
         var line = tilesInLine - 1
         var row = 0
-        for var i = 0; i < tilesCount; ++i {
+        for _ in 0 ..< tilesCount {
             points.append(CGPoint(x: (CGFloat(row) * width), y: (CGFloat(line) * width)))
             if row == tilesInLine - 1{
                 line -= 1
@@ -100,7 +100,7 @@ class SliddingPuzzle: SKScene {
         
         for point in points{
             
-            setTileWithImage(SKTexture(image: imagesArr[points.indexOf(point)!]), position: point, size: CGSize(width: width - 1, height: width - 1))
+            setTileWithImage(SKTexture(image: imagesArr[points.index(of: point)!]), position: point, size: CGSize(width: width - 1, height: width - 1))
             //tiles[points.indexOf(point)!].textLabel?.text = String(points.indexOf(point)! + 1)
         }
         
@@ -109,34 +109,34 @@ class SliddingPuzzle: SKScene {
         
     }
     
-    func putTilesInRandomPoints(animate : Bool){
+    func putTilesInRandomPoints(_ animate : Bool){
         var values = [NSValue]()
         for point in points {
-            values.append(NSValue(CGPoint: point))
+            values.append(NSValue(cgPoint: point))
         }
-        values = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(values) as! [NSValue]
+        values = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: values) as! [NSValue]
         
         let randomizedPoints = values
         for tile in tiles {
             if animate{
-                tile.wrongPostion = randomizedPoints[self.tiles.indexOf(tile)!].CGPointValue()
-                let wait = SKAction.waitForDuration(3.0)
-                let action = SKAction.moveTo(randomizedPoints[tiles.indexOf(tile)!].CGPointValue(), duration: 0.65)
+                tile.wrongPostion = randomizedPoints[self.tiles.index(of: tile)!].cgPointValue
+                let wait = SKAction.wait(forDuration: 3.0)
+                let action = SKAction.move(to: randomizedPoints[tiles.index(of: tile)!].cgPointValue, duration: 0.65)
                 
                 let group = SKAction.sequence([wait, action])
-                tile.runAction(group, completion: { () -> Void in
+                tile.run(group, completion: { () -> Void in
                     self.hideOneRandomTile(false)
                     
                 })
             }else{
-                tile.position = randomizedPoints[tiles.indexOf(tile)!].CGPointValue()
-                tile.wrongPostion = randomizedPoints[tiles.indexOf(tile)!].CGPointValue()
+                tile.position = randomizedPoints[tiles.index(of: tile)!].cgPointValue
+                tile.wrongPostion = randomizedPoints[tiles.index(of: tile)!].cgPointValue
                 
             }
         }
         
     }
-    func hideOneRandomTile(animate : Bool){
+    func hideOneRandomTile(_ animate : Bool){
         let tileToHide = tiles.last
         tileToHide!.hide(true)
         hidenTile = tileToHide
@@ -144,7 +144,7 @@ class SliddingPuzzle: SKScene {
         self.hidenTile?.position = (self.hidenTile?.correctPosition)!
         radarForMovableTiles(emptyPoint!)
     }
-    func radarForMovableTiles(centerNodePosition : CGPoint){
+    func radarForMovableTiles(_ centerNodePosition : CGPoint){
         movableTiles.removeAll()
         for tile in tiles{
             tile.move = TileMoves.notMove
@@ -153,10 +153,10 @@ class SliddingPuzzle: SKScene {
         let rightPoint = CGPoint(x: centerNodePosition.x + (width * 1.5), y: centerNodePosition.y + (width * 0.5))
         let leftPoint = CGPoint(x: centerNodePosition.x - (width * 0.5), y: centerNodePosition.y + (width * 0.5))
         let downPoint = CGPoint(x: centerNodePosition.x + (width * 0.5), y: centerNodePosition.y - (width * 0.5))
-        let upNodes = border?.nodesAtPoint(upPoint)
-        let rightNodes = border?.nodesAtPoint(rightPoint)
-        let leftNodes  = border?.nodesAtPoint(leftPoint)
-        let downNodes = border?.nodesAtPoint(downPoint)
+        let upNodes = border?.nodes(at: upPoint)
+        let rightNodes = border?.nodes(at: rightPoint)
+        let leftNodes  = border?.nodes(at: leftPoint)
+        let downNodes = border?.nodes(at: downPoint)
         if let subNodes = upNodes{
             for  node in subNodes where node.name == "tile"{
                 (node as! Tile).move = TileMoves.down
@@ -183,14 +183,14 @@ class SliddingPuzzle: SKScene {
     func setBorder(){
         let sprite = SKSpriteNode()
         let widthOfHolder = CGFloat(min(frame.height - 50, frame.width - 50))
-        sprite.color = UIColor.clearColor()
+        sprite.color = UIColor.clear
         sprite.size = CGSize(width: widthOfHolder, height: widthOfHolder)
         sprite.position = CGPoint(x: (frame.width - widthOfHolder) * 0.5, y: 25)
         sprite.anchorPoint = CGPoint(x: 0, y: 0)
         addChild(sprite)
         border = sprite
     }
-    func setTile(position : CGPoint, size : CGSize){
+    func setTile(_ position : CGPoint, size : CGSize){
         let sprite = Tile()
         sprite.name = "tile"
         sprite.color = UIColor(rgba: "#01837f")
@@ -204,7 +204,7 @@ class SliddingPuzzle: SKScene {
         tiles.append(sprite)
         
     }
-    func setTileWithImage(texture: SKTexture, position : CGPoint, size : CGSize){
+    func setTileWithImage(_ texture: SKTexture, position : CGPoint, size : CGSize){
         let sprite = Tile(texture: texture)
         sprite.name = "tile"
         sprite.anchorPoint = CGPoint(x: 0, y: 0)
@@ -214,12 +214,12 @@ class SliddingPuzzle: SKScene {
         border!.addChild(sprite)
         tiles.append(sprite)
     }
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         /* Called when a touch begins */
         
         for touch in touches {
-            let loc = touch.locationInNode(border!)
-            let movableNodes = border?.nodesAtPoint(loc)
+            let loc = touch.location(in: border!)
+            let movableNodes = border?.nodes(at: loc)
             if let subNodes = movableNodes{
                 for  node in subNodes where node.name == "tile"{
                     
@@ -227,11 +227,11 @@ class SliddingPuzzle: SKScene {
                     if movableTiles.contains(movingTile!){
                         movingTile?.removeAllActions()
                         let oldEmpty = emptyPoint!
-                        let action = SKAction.moveTo(emptyPoint!, duration: 0.2)
+                        let action = SKAction.move(to: emptyPoint!, duration: 0.2)
                         
                         emptyPoint = movingTile!.wrongPostion
                         self.movingTile?.wrongPostion = oldEmpty
-                        movingTile!.runAction(action, completion: { () -> Void in
+                        movingTile!.run(action, completion: { () -> Void in
                             
                             self.radarForMovableTiles(self.emptyPoint!)
                             var correctCounter = 0
@@ -245,9 +245,9 @@ class SliddingPuzzle: SKScene {
                             print(correctCounter)
                             self.correctCount = correctCounter
                             if self.correctCount == self.tiles.count{
-                                let action = SKAction.fadeAlphaTo(1.0, duration: 0.2)
+                                let action = SKAction.fadeAlpha(to: 1.0, duration: 0.2)
                                 self.hidenTile?.showAfterGame()
-                                self.hidenTile?.runAction(action)
+                                self.hidenTile?.run(action)
                                 
                             }
                             
@@ -262,7 +262,7 @@ class SliddingPuzzle: SKScene {
         
     }
     
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
     }
 }
@@ -281,22 +281,22 @@ class Tile : SKSpriteNode{
         textLabel = SKLabelNode()
         textLabel?.fontName = "ChalkboardSE-Bold"
         textLabel?.fontSize = self.frame.size.width * 0.4
-        textLabel?.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+        textLabel?.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
         textLabel?.position = CGPoint(x: self.frame.size.width * 0.5, y: self.frame.size.height * 0.5)
         addChild(textLabel!)
     }
-    func hide(animate : Bool){
+    func hide(_ animate : Bool){
         if animate{
-            runAction(SKAction.fadeAlphaTo(0.01, duration: 3.0)) { () -> Void in
-                self.hidden = true
-            }}else{
+            run(SKAction.fadeAlpha(to: 0.01, duration: 3.0), completion: { () -> Void in
+                self.isHidden = true
+            }) }else{
             alpha = 0.01
-            hidden = true
+            isHidden = true
         }
         
     }
     func showAfterGame(){
-        hidden = false
+        isHidden = false
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
