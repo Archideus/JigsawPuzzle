@@ -63,7 +63,7 @@ extension UIImage{
     func sliceImageToPieces(_ imageSize : CGSize, pieceSize : CGSize) -> [UIImage]{
         let whole = resizeImage(imageSize, image: self)
         var imagesArray = [UIImage]()
-       
+
         let imagesCountInLine = Int(imageSize.width / pieceSize.width)
         let tilesCount = Int(imagesCountInLine * imagesCountInLine)
         var line = 0
@@ -84,7 +84,7 @@ extension UIImage{
         return imagesArray
     }
     func resizeImage(_ size: CGSize, image : UIImage) -> UIImage {
-      
+
         UIGraphicsBeginImageContext(size);
         
         guard let context = UIGraphicsGetCurrentContext() else { return image }
@@ -101,138 +101,40 @@ extension UIImage{
         return scaledImage!
     }
 
-    func jigSawCuter(_ imageSize : CGSize, piecesCount : Int) -> ([UIImage], [CGPoint]){
+    func jigSawCuter(_ imageSize : CGSize) -> ([UIImage], [CGPoint]){
         let imageOrg = resizeImage(imageSize, image: self)
-        var im = [UIImage]()
-        let paths = (nineXnine() as NSArray).reversedArray() as! [UIBezierPath]
+        var images = [UIImage]()
+        let paths = puzzlePaths
         var centers = [CGPoint]()
         ////Next lines generates huge memory peak when image is cutted, but it releases afterwards
-        for i in 0 ..< piecesCount{
+        for i in 0..<paths.count{
             let path = paths[i]
             path.usesEvenOddFillRule = true
-            centers.append(path.center())
-            let result = clipImage(path, image: imageOrg)
-            im.append(result)
-            
+            centers.append(path.center)
+            if let image = clipImage(path, image: imageOrg) {
+                images.append(image)
+            }
 
         }
-        return (im, centers)
+        return (images, centers)
     }
-    func clipImage(_ path : UIBezierPath, image : UIImage) -> UIImage{
+    func clipImage(_ path : UIBezierPath, image : UIImage) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(image.size, false, 0)
         path.addClip()
         image.draw(at: CGPoint.zero)
-        let newIma = UIGraphicsGetImageFromCurrentImageContext()
+        let pathRect = path.cgPath.boundingBoxOfPath
+        guard let newImage = UIGraphicsGetImageFromCurrentImageContext(),
+            let croppedImage = newImage.cgImage?.cropping(to: pathRect.applying(CGAffineTransform(scaleX: 2.0, y: 2.0))) else {
+                return nil
+        }
         UIGraphicsEndImageContext()
-        return trimmed(newIma!)
+        return UIImage(cgImage: croppedImage, scale: UIScreen.main.scale, orientation: .up)
     }
-    func trimmed(_ image : UIImage) -> UIImage{
-        guard let inImage = image.cgImage else { return image }
-        let m_dataRef : CFData = inImage.dataProvider!.data!
-        let m_PixelBuf : UnsafePointer<UInt8> = CFDataGetBytePtr(m_dataRef)
-        let width : size_t = inImage.width
-        let height : size_t = inImage.height
-        var top : CGPoint?
-        var left : CGPoint?
-        var right : CGPoint?
-        var bottom : CGPoint?
-        var breakOut = false
-        for x in 0..<width {
-            if !breakOut {
-                for y in 0 ..< height{
-                    var loc = x + (y * width)
-                    loc *= 4
-                    if m_PixelBuf[loc + 3] != 0{
-                        left = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                        breakOut = true
-                        break
-                    }
-                }
-            }
-        }
-        breakOut = false
-        for y in 0..<height {
-            if !breakOut {
-                for x in 0 ..< width{
-                    var loc = x + (y * width)
-                    loc *= 4
-                    if m_PixelBuf[loc + 3] != 0{
-                        top = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                        breakOut = true
-                        break
-                    }
-                }
-            }
-        }
-        breakOut = false
-        for y in (0...height-1).reversed() {
-            if !breakOut {
-                for x in (0...width - 1).reversed() {
-                    var loc = x + (y * width)
-                    loc *= 4
-                    if m_PixelBuf[loc + 3] != 0{
-                        bottom = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                        breakOut = true
-                        break
-                    }
-                }
-            }
-        }
-        
-        for y in (0...height - 1).reversed() {
-            if !breakOut {
-                for x in (0...width - 1).reversed() {
-                    var loc = x + (y * width)
-                    loc *= 4
-                    if m_PixelBuf[loc + 3] != 0{
-                        bottom = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                        breakOut = true
-                        break
-                    }
-                }
-            }
-        }
-        breakOut = false
-        for x in (0...width - 1).reversed() {
-            if !breakOut {
-                for y in (0...height - 1).reversed(){
-                    var loc = x + (y * width)
-                    loc *= 4
-                    if m_PixelBuf[loc + 3] != 0{
-                        right = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                        breakOut = true
-                        break
-                    }
-                }
-            }
-        }
-        let scale = image.scale
-        let cropRect = CGRect(x: left!.x / scale, y: top!.y / scale, width: (right!.x - left!.x) / scale, height: (bottom!.y - top!.y) / scale)
-        UIGraphicsBeginImageContextWithOptions(cropRect.size, false, scale)
-        image.draw(at: CGPoint(x: -cropRect.origin.x, y: -cropRect.origin.y), blendMode: CGBlendMode.copy, alpha: 1.0)
-        let croppedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return croppedImage!
-        
-       
-    }
-    
+
 }
 
-extension NSArray{
-    func reversedArray() -> NSArray{
-        let array = NSMutableArray(capacity: self.count)
-        let enumeratore = self.reverseObjectEnumerator()
-        for element in enumeratore {
-            array.add(element)
-            
-        }
-        return array
-    }
-    
-}
 extension UIBezierPath{
-    func center() -> CGPoint{
+    var center: CGPoint {
         return CGPoint(x: self.bounds.midX, y: self.bounds.midY)
     }
 }
@@ -289,13 +191,13 @@ extension CGSize{
 }
 extension CGPoint{
     static func randomPointInRect(_ rect : CGRect) -> CGPoint{
-            var point = rect.origin
-            point.x += CGFloat(arc4random_uniform(UInt32(rect.width)))
-            point.y += CGFloat(arc4random_uniform(UInt32(rect.height)))
-    
-            return point
+        var point = rect.origin
+        point.x += CGFloat(arc4random_uniform(UInt32(rect.width)))
+        point.y += CGFloat(arc4random_uniform(UInt32(rect.height)))
+
+        return point
         
-     
+
     }
 }
 extension Collection where Index == Int {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public func nineXnine() -> [UIBezierPath]{
+var puzzlePaths: [UIBezierPath] {
     
     var paths = [UIBezierPath]()
     /// XMLID_100_ Drawing

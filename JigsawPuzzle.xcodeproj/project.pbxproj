@@ -7,39 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		63D5C8E41F82306000C42476 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B868AF331B8473250067590E /* Extensions.swift */; };
-		63D5C8E51F82306000C42476 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B868AF171B8472E30067590E /* AppDelegate.swift */; };
-		63D5C8E61F82306000C42476 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B868AF1D1B8472E30067590E /* GameViewController.swift */; };
-		63D5C8E71F82306000C42476 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B868AF3B1B84765E0067590E /* GameScene.swift */; };
-		63D5C8E81F82306000C42476 /* SliddingPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B868AF2D1B8473000067590E /* SliddingPuzzle.swift */; };
-		63D5C8E91F82306000C42476 /* JigsawPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B868AF2E1B8473000067590E /* JigsawPuzzle.swift */; };
-		63D5C8EA1F82306000C42476 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B868AF351B8473560067590E /* Enums.swift */; };
-		63D5C8EB1F82306000C42476 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B868AF361B8473560067590E /* Constants.swift */; };
-		63D5C8EC1F82306000C42476 /* PuzzleBeziers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B868AF311B8473190067590E /* PuzzleBeziers.swift */; };
-		63D5C8ED1F82306000C42476 /* SKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B837B1C01C15ECC500BE912F /* SKButton.swift */; };
-		63D5C8F01F82402800C42476 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63D5C8EE1F82402800C42476 /* LaunchScreen.storyboard */; };
-		B868AF211B8472E40067590E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B868AF1F1B8472E40067590E /* Main.storyboard */; };
-		B868AF231B8472E40067590E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B868AF221B8472E40067590E /* Assets.xcassets */; };
-		B868AF3A1B8476520067590E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B868AF391B8476520067590E /* GameScene.sks */; };
+		E299B5DC1F9D53A2002AEA6D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E282A8141F9D4BB900780B52 /* Main.storyboard */; };
+		E299B5DD1F9D53B5002AEA6D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282A8161F9D4BB900780B52 /* Extensions.swift */; };
+		E299B5DE1F9D53B7002AEA6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282A8171F9D4BB900780B52 /* AppDelegate.swift */; };
+		E299B5DF1F9D53BA002AEA6D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E282A8181F9D4BB900780B52 /* Info.plist */; };
+		E299B5E01F9D53BC002AEA6D /* SKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282A8101F9D4BB900780B52 /* SKButton.swift */; };
+		E299B5E11F9D53BE002AEA6D /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282A80F1F9D4BB900780B52 /* Enums.swift */; };
+		E299B5E21F9D53C1002AEA6D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282A80E1F9D4BB900780B52 /* GameViewController.swift */; };
+		E299B5E31F9D53C4002AEA6D /* SliddingPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282A80D1F9D4BB900780B52 /* SliddingPuzzle.swift */; };
+		E299B5E41F9D53C6002AEA6D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282A8071F9D4BB900780B52 /* Constants.swift */; };
+		E299B5E51F9D53CB002AEA6D /* JigsawPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282A8091F9D4BB900780B52 /* JigsawPuzzle.swift */; };
+		E299B5E61F9D53CB002AEA6D /* JigsawPuzzle.sks in Resources */ = {isa = PBXBuildFile; fileRef = E282A80A1F9D4BB900780B52 /* JigsawPuzzle.sks */; };
+		E299B5E71F9D53CB002AEA6D /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282A80B1F9D4BB900780B52 /* Piece.swift */; };
+		E299B5E81F9D53CB002AEA6D /* PuzzleBeziers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E282A80C1F9D4BB900780B52 /* PuzzleBeziers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		63D5C8EF1F82402800C42476 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
-		B837B1C01C15ECC500BE912F /* SKButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButton.swift; sourceTree = SOURCE_ROOT; };
 		B868AF141B8472E30067590E /* JigsawPuzzle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JigsawPuzzle.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B868AF171B8472E30067590E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = SOURCE_ROOT; };
-		B868AF1D1B8472E30067590E /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = SOURCE_ROOT; };
-		B868AF201B8472E40067590E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B868AF221B8472E40067590E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
-		B868AF271B8472E40067590E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B868AF2D1B8473000067590E /* SliddingPuzzle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliddingPuzzle.swift; sourceTree = SOURCE_ROOT; };
-		B868AF2E1B8473000067590E /* JigsawPuzzle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JigsawPuzzle.swift; sourceTree = SOURCE_ROOT; };
-		B868AF311B8473190067590E /* PuzzleBeziers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PuzzleBeziers.swift; sourceTree = SOURCE_ROOT; };
-		B868AF331B8473250067590E /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = SOURCE_ROOT; };
-		B868AF351B8473560067590E /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = SOURCE_ROOT; };
-		B868AF361B8473560067590E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = SOURCE_ROOT; };
-		B868AF391B8476520067590E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = SOURCE_ROOT; };
-		B868AF3B1B84765E0067590E /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = SOURCE_ROOT; };
+		E282A8071F9D4BB900780B52 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		E282A8091F9D4BB900780B52 /* JigsawPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JigsawPuzzle.swift; sourceTree = "<group>"; };
+		E282A80A1F9D4BB900780B52 /* JigsawPuzzle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = JigsawPuzzle.sks; sourceTree = "<group>"; };
+		E282A80B1F9D4BB900780B52 /* Piece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
+		E282A80C1F9D4BB900780B52 /* PuzzleBeziers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleBeziers.swift; sourceTree = "<group>"; };
+		E282A80D1F9D4BB900780B52 /* SliddingPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliddingPuzzle.swift; sourceTree = "<group>"; };
+		E282A80E1F9D4BB900780B52 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		E282A80F1F9D4BB900780B52 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		E282A8101F9D4BB900780B52 /* SKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKButton.swift; sourceTree = "<group>"; };
+		E282A8111F9D4BB900780B52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E282A8131F9D4BB900780B52 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E282A8151F9D4BB900780B52 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E282A8161F9D4BB900780B52 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		E282A8171F9D4BB900780B52 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E282A8181F9D4BB900780B52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +55,7 @@
 		B868AF0B1B8472E30067590E = {
 			isa = PBXGroup;
 			children = (
-				B868AF161B8472E30067590E /* JigsawPuzzle */,
+				E282A8061F9D4BB900780B52 /* JigsawPuzzle */,
 				B868AF151B8472E30067590E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -69,27 +68,35 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B868AF161B8472E30067590E /* JigsawPuzzle */ = {
+		E282A8061F9D4BB900780B52 /* JigsawPuzzle */ = {
 			isa = PBXGroup;
 			children = (
-				B868AF331B8473250067590E /* Extensions.swift */,
-				B868AF171B8472E30067590E /* AppDelegate.swift */,
-				B868AF1D1B8472E30067590E /* GameViewController.swift */,
-				B868AF391B8476520067590E /* GameScene.sks */,
-				B868AF3B1B84765E0067590E /* GameScene.swift */,
-				B868AF2D1B8473000067590E /* SliddingPuzzle.swift */,
-				B868AF2E1B8473000067590E /* JigsawPuzzle.swift */,
-				B868AF351B8473560067590E /* Enums.swift */,
-				B868AF361B8473560067590E /* Constants.swift */,
-				B868AF311B8473190067590E /* PuzzleBeziers.swift */,
-				B837B1C01C15ECC500BE912F /* SKButton.swift */,
-				B868AF1F1B8472E40067590E /* Main.storyboard */,
-				B868AF221B8472E40067590E /* Assets.xcassets */,
-				63D5C8EE1F82402800C42476 /* LaunchScreen.storyboard */,
-				B868AF271B8472E40067590E /* Info.plist */,
+				E282A8071F9D4BB900780B52 /* Constants.swift */,
+				E282A8081F9D4BB900780B52 /* Jigsaw */,
+				E282A80D1F9D4BB900780B52 /* SliddingPuzzle.swift */,
+				E282A80E1F9D4BB900780B52 /* GameViewController.swift */,
+				E282A80F1F9D4BB900780B52 /* Enums.swift */,
+				E282A8101F9D4BB900780B52 /* SKButton.swift */,
+				E282A8111F9D4BB900780B52 /* Assets.xcassets */,
+				E282A8121F9D4BB900780B52 /* LaunchScreen.storyboard */,
+				E282A8141F9D4BB900780B52 /* Main.storyboard */,
+				E282A8161F9D4BB900780B52 /* Extensions.swift */,
+				E282A8171F9D4BB900780B52 /* AppDelegate.swift */,
+				E282A8181F9D4BB900780B52 /* Info.plist */,
 			);
 			path = JigsawPuzzle;
-			sourceTree = SOURCE_ROOT;
+			sourceTree = "<group>";
+		};
+		E282A8081F9D4BB900780B52 /* Jigsaw */ = {
+			isa = PBXGroup;
+			children = (
+				E282A8091F9D4BB900780B52 /* JigsawPuzzle.swift */,
+				E282A80A1F9D4BB900780B52 /* JigsawPuzzle.sks */,
+				E282A80B1F9D4BB900780B52 /* Piece.swift */,
+				E282A80C1F9D4BB900780B52 /* PuzzleBeziers.swift */,
+			);
+			path = Jigsaw;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -124,6 +131,7 @@
 				TargetAttributes = {
 					B868AF131B8472E30067590E = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = SV2EN655F9;
 						LastSwiftMigration = 0830;
 					};
 				};
@@ -151,10 +159,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B868AF3A1B8476520067590E /* GameScene.sks in Resources */,
-				63D5C8F01F82402800C42476 /* LaunchScreen.storyboard in Resources */,
-				B868AF231B8472E40067590E /* Assets.xcassets in Resources */,
-				B868AF211B8472E40067590E /* Main.storyboard in Resources */,
+				E299B5DF1F9D53BA002AEA6D /* Info.plist in Resources */,
+				E299B5E61F9D53CB002AEA6D /* JigsawPuzzle.sks in Resources */,
+				E299B5DC1F9D53A2002AEA6D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,37 +172,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63D5C8E41F82306000C42476 /* Extensions.swift in Sources */,
-				63D5C8E51F82306000C42476 /* AppDelegate.swift in Sources */,
-				63D5C8E61F82306000C42476 /* GameViewController.swift in Sources */,
-				63D5C8E71F82306000C42476 /* GameScene.swift in Sources */,
-				63D5C8E81F82306000C42476 /* SliddingPuzzle.swift in Sources */,
-				63D5C8E91F82306000C42476 /* JigsawPuzzle.swift in Sources */,
-				63D5C8EA1F82306000C42476 /* Enums.swift in Sources */,
-				63D5C8EB1F82306000C42476 /* Constants.swift in Sources */,
-				63D5C8EC1F82306000C42476 /* PuzzleBeziers.swift in Sources */,
-				63D5C8ED1F82306000C42476 /* SKButton.swift in Sources */,
+				E299B5E21F9D53C1002AEA6D /* GameViewController.swift in Sources */,
+				E299B5DE1F9D53B7002AEA6D /* AppDelegate.swift in Sources */,
+				E299B5E01F9D53BC002AEA6D /* SKButton.swift in Sources */,
+				E299B5E31F9D53C4002AEA6D /* SliddingPuzzle.swift in Sources */,
+				E299B5E51F9D53CB002AEA6D /* JigsawPuzzle.swift in Sources */,
+				E299B5E71F9D53CB002AEA6D /* Piece.swift in Sources */,
+				E299B5E81F9D53CB002AEA6D /* PuzzleBeziers.swift in Sources */,
+				E299B5E41F9D53C6002AEA6D /* Constants.swift in Sources */,
+				E299B5E11F9D53BE002AEA6D /* Enums.swift in Sources */,
+				E299B5DD1F9D53B5002AEA6D /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		63D5C8EE1F82402800C42476 /* LaunchScreen.storyboard */ = {
+		E282A8121F9D4BB900780B52 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				63D5C8EF1F82402800C42476 /* Base */,
+				E282A8131F9D4BB900780B52 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		B868AF1F1B8472E40067590E /* Main.storyboard */ = {
+		E282A8141F9D4BB900780B52 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B868AF201B8472E40067590E /* Base */,
+				E282A8151F9D4BB900780B52 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = SOURCE_ROOT;
+			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
@@ -292,13 +299,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = SV2EN655F9;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = /Users/artursderkintis/Desktop/JigsawPuzzle/JigsawPuzzle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nealceffrey.JigsawPuzzle;
+				PRODUCT_BUNDLE_IDENTIFIER = com.starflinc.jigsawPuzzle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -306,13 +314,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = SV2EN655F9;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = /Users/artursderkintis/Desktop/JigsawPuzzle/JigsawPuzzle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nealceffrey.JigsawPuzzle;
+				PRODUCT_BUNDLE_IDENTIFIER = com.starflinc.jigsawPuzzle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

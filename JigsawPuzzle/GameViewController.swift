@@ -18,7 +18,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        let scene = SliddingPuzzle()
-         let scene = JigsawPuzzle()
+        if let scene = JigsawPuzzle(fileNamed: "JigsawPuzzle") {
             // Configure the view.
             let skView = self.view as! SKView
             skView.showsFPS = true
@@ -32,7 +32,7 @@ class GameViewController: UIViewController {
             scene.size = skView.frame.size
 
             skView.presentScene(scene)
-        
+        }
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
