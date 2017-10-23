@@ -1,7 +1,5 @@
 # JigsawPuzzle
-Simple 9x9 jigsaw puzzle game written in Swift 2, also Slidding puzzle concept included.
-
-In my learning journey I decided to make completely working Jigsaw puzzle game concept.
+Simple 9x9 jigsaw puzzle game written in Swift 4, also Slidding puzzle concept included.
 
 So here it is.
 
@@ -13,12 +11,6 @@ video: https://www.dropbox.com/s/8las1gfayfgbf32/puzzlePreview.m4v?dl=0
 
 image:
 ![alt tag](https://github.com/nealCeffrey/JigsawPuzzle/blob/master/screenshots/jigsaw.jpg)
-
-There's known issue:
-
-When I cut these irregular shapes memory can peak up to 650mb on iPad air 2 and after 1-2 seconds it goes back to ~50mb.
-I tried many ways to reduce it, but without losing quality there's none.
-So, maybe you can help me understand how can the same thing be done in lighter way. Or is it just normal?
 
 
 Also I have included Slidding puzzle.
@@ -42,3 +34,5 @@ enum ImageLevels : Int {
 ```
 Here's how it looks like.
 ![alt tag](https://github.com/nealCeffrey/JigsawPuzzle/blob/master/screenshots/sliding.jpg)
+
+Thanks for the ratings. Reviving this repo at the moment.
